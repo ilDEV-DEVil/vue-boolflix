@@ -2,6 +2,8 @@
   <div id="app">
    <input @keyup.enter="printCard('/search/movie', 'filmList' ),printCard('/search/tv','tvShowList')"  v-model="userSearch" type="text">
    <button @click="printCard('/search/movie', 'filmList' ),printCard('/search/tv','tvShowList')" >cerca</button>
+   
+   <!-- FILM -->
    <ul>
      <li><h2>FILM</h2></li>
      <li v-for="card in filmList" :key="card.id">
@@ -9,25 +11,27 @@
        titolo: {{ card.title }} <br>
        titolo originale: {{ card.original_title }} <br>
        lingua : <img class="flags" :src=" !flags[card.original_language] ? urlWorld : flags[card.original_language]" alt=""> <br>
-       voto : {{ Math.ceil(card.vote_average / 2) }} <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) === 0 ? 'd-none' : ''"  aria-hidden="true"></i>    <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) < 2 ? 'd-none' : ''" aria-hidden="true"></i>     <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) < 3 ? 'd-none' : ''" aria-hidden="true"></i>  <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) < 4 ? 'd-none' : ''" aria-hidden="true"></i>   <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) < 5 ? 'd-none' : ''" aria-hidden="true"></i>  
-                                                    <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) === 5 ? 'd-none' : ''"  aria-hidden="true"></i>    <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) > 0 ? 'd-none' : ''" aria-hidden="true"></i>     <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) > 1 ? 'd-none' : ''" aria-hidden="true"></i>  <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) > 2 ? 'd-none' : ''" aria-hidden="true"></i>   <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) > 3 ? 'd-none' : ''" aria-hidden="true"></i>
-                                                      
-              
-      
-     <!--  voto :  {{ printStar( (Math.ceil( (card.vote_average / 2) ) ) ) }} -->     
-      <!-- inserire il numero di stelle in base al numero del voto
-            se il voto è 1 allora inseriamo una stella 
-            printStar (voto){
-              for( i=0 , i < voto , i++ ){
+       voto : <!-- {{ Math.ceil(card.vote_average / 2) }} --> 
+       <!-- STELLE PIENE -->
+        <i v-for="star,i in 5" :key="i" class="fa fa-star text-warning" :class=" Math.ceil(card.vote_average / 2) < i + 1 ? 'd-none' : ''"  aria-hidden="true"></i>
+        <!-- <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) < 1 ? 'd-none' : ''"  aria-hidden="true"></i>
+        <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) < 2 ? 'd-none' : ''" aria-hidden="true"></i>
+        <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) < 3 ? 'd-none' : ''" aria-hidden="true"></i>
+        <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) < 4 ? 'd-none' : ''" aria-hidden="true"></i>
+        <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) < 5 ? 'd-none' : ''" aria-hidden="true"></i> -->
 
-             <i class="fa fa-star-o" aria-hidden="true"></i> 
-              }
-            }
-       -->
-
-       <!-- inserisco tutte le stelle vuote -->
+        <!-- STELLE VUOTE-->
+        <i v-for="starEmpty,i in 5" :key="i + 5" class="fa fa-star-o " :class=" Math.ceil(card.vote_average / 2) > i ? 'd-none' : ''"  aria-hidden="true"></i>
+        <!-- <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) > 0 ? 'd-none' : ''" aria-hidden="true"></i>
+        <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) > 1 ? 'd-none' : ''" aria-hidden="true"></i>
+        <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) > 2 ? 'd-none' : ''" aria-hidden="true"></i>
+        <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) > 3 ? 'd-none' : ''" aria-hidden="true"></i>
+        <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) > 4 ? 'd-none' : ''"  aria-hidden="true"></i> -->                                               
+        
       </li>
     </ul>
+
+  <!-- SERIE TV -->
     <ul>
       <li><h2>SERIE TV</h2></li>
       <li v-for="card in tvShowList" :key="card.id">
@@ -35,8 +39,24 @@
         titolo: {{ card.name }} <br>
         titolo originale: {{ card.original_name}} <br>
         lingua : <img class="flags" :src=" !flags[card.original_language] ? urlWorld : flags[card.original_language]" alt=""> <br>
-        voto : {{ Math.ceil(card.vote_average / 2) }} <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) === 0 ? 'd-none' : ''"  aria-hidden="true"></i>    <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) < 2 ? 'd-none' : ''" aria-hidden="true"></i>     <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) < 3 ? 'd-none' : ''" aria-hidden="true"></i>  <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) < 4 ? 'd-none' : ''" aria-hidden="true"></i>   <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) < 5 ? 'd-none' : ''" aria-hidden="true"></i>  
-                                                    <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) === 5 ? 'd-none' : ''"  aria-hidden="true"></i>    <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) > 0 ? 'd-none' : ''" aria-hidden="true"></i>     <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) > 1 ? 'd-none' : ''" aria-hidden="true"></i>  <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) > 2 ? 'd-none' : ''" aria-hidden="true"></i>   <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) > 3 ? 'd-none' : ''" aria-hidden="true"></i>
+        voto : {{ Math.ceil(card.vote_average / 2) }} 
+        <!-- STELLE PIENE -->
+        <!-- <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) < 1 ? 'd-none' : ''"  aria-hidden="true"></i>
+        <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) < 2 ? 'd-none' : ''" aria-hidden="true"></i>
+        <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) < 3 ? 'd-none' : ''" aria-hidden="true"></i>
+        <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) < 4 ? 'd-none' : ''" aria-hidden="true"></i>
+        <i class="fa fa-star" :class=" Math.ceil(card.vote_average / 2) < 5 ? 'd-none' : ''" aria-hidden="true"></i> -->  
+        <i v-for="star,i in 5" :key="i + 10" class="fa fa-star text-warning" :class=" Math.ceil(card.vote_average / 2) < i + 1 ? 'd-none' : ''"  aria-hidden="true"></i>
+        
+
+        <!-- STELLE VUOTE-->
+        <!-- <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) > 0 ? 'd-none' : ''" aria-hidden="true"></i>
+        <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) > 1 ? 'd-none' : ''" aria-hidden="true"></i>
+        <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) > 2 ? 'd-none' : ''" aria-hidden="true"></i>
+        <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) > 3 ? 'd-none' : ''" aria-hidden="true"></i>
+        <i class="fa fa-star-o" :class=" Math.ceil(card.vote_average / 2) > 4 ? 'd-none' : ''"  aria-hidden="true"></i> -->
+        <i v-for="starEmpty,i in 5" :key="i + 15" class="fa fa-star-o " :class=" Math.ceil(card.vote_average / 2) > i ? 'd-none' : ''"  aria-hidden="true"></i>
+
       </li>
    </ul>
   </div>
@@ -58,6 +78,7 @@ export default {
       userSearch : "",
       filmList : "",
       tvShowList : "",
+  
       urlWorld : "https://images.emojiterra.com/twitter/v13.1/128px/1f310.png",
       flags: {
         it : "https://hotemoji.com/images/dl/9/flag-of-italy-emoji-by-twitter.png",
@@ -77,9 +98,6 @@ export default {
      * listKey (è la mia lista dove pusho gli elementi, quando viene invocato va scritto sottoforma di stringa, perchè è come se fosse la chiave di this e le chiavi ed i valori  vanno scritti come stringhe nei JSON )
      */
     printCard(search, listKey ){
-      /* console.log(Object.keys(this.Flags));
-      console.log("ricerca partita"); */
-      console.log(this.flags.it);
     
       axios.get(this.apiUrl + search, {
         params: {
@@ -88,15 +106,10 @@ export default {
         }
       })
     .then(resp => {
-     /*  if(search === '/search/movie'){
-        this.filmList = resp.data.results
-      } else{
-        this.tvShowList = resp.data.results
-      } */
       this[listKey] = resp.data.results
 		})
     },
-    
+
     imgPath(urlPoster) {
         /* const urlImg = "https://image.tmdb.org/t/p/"
         const posterSize = "w342" */
