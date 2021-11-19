@@ -1,38 +1,43 @@
 <template>
-  <div id="app">
-  <Nav @getListData="listenListData" ></Nav>
-  
-  <h2>FILM</h2>
-  <Card v-for="card in filmList" :key="card.id" :card="card"> </Card>
+ 
+    <div>
+        <img :src="imgPath(card.poster_path)" alt=""> <br>
+        titolo: {{ card.title }} <br>
+        titolo originale: {{ card.original_title }} <br>
+        lingua : <img class="flags" :src=" !flags[card.original_language] ? urlWorld : flags[card.original_language]" alt=""> <br>
+        voto : <i v-for="star,i in 5" :key="i" class="fa  text-warning" :class=" i + 1 > Math.round(card.vote_average / 2) ? 'fa-star-o' : 'fa-star'" aria-hidden="true"></i>
+    </div>
+
    
-  <h2>SERIE TV</h2>
-  <Card v-for="card in tvShowList" :key="card.id" :card="card"> </Card>
 
-
-  </div>
+   
+  
 </template>
 
 <script>
-
-import Nav from "./components/Nav.vue"
-import Card from "./components/Card.vue"
-
 export default {
-  name: 'App',
-  components: { Nav, Card },
-  data(){
+name: "Card",
+data(){
     return{
-      userSearch : "",
-      filmList : "",
-      tvShowList : "",
-      
-    }
-  },
-  methods: {
-    /**
-     * listKey (è la mia lista dove pusho gli elementi, quando viene invocato va scritto sottoforma di stringa, perchè è come se fosse la chiave di this e le chiavi ed i valori  vanno scritti come stringhe nei JSON )
-     */
+        basePosterPath:  "https://image.tmdb.org/t/p/",
+        sizePosterPath:  "w342",
+        urlWorld : "https://images.emojiterra.com/twitter/v13.1/128px/1f310.png",
+        flags: {
+            it : "https://hotemoji.com/images/dl/9/flag-of-italy-emoji-by-twitter.png",
+            en : "https://images.emojiterra.com/twitter/v12.1.5/512px/1f1ec-1f1e7.png",
+            es : "https://images.emojiterra.com/twitter/v12.1.5/512px/1f1ea-1f1f8.png",
+            de : "https://images.emojiterra.com/twitter/v13.1/512px/1f1e9-1f1ea.png",
     
+            //se la lingua non è presente nele mie flags allora inserisci terra se no 
+            // !Flags ? "https://images.emojiterra.com/twitter/v13.1/128px/1f310.png" : "Flags[card.original_language]"
+        },
+
+    }
+},
+props: {
+    card : Object, 
+},
+methods: {
     imgPath(urlPoster) {
         /* const urlImg = "https://image.tmdb.org/t/p/"
         const posterSize = "w342" */
@@ -42,28 +47,14 @@ export default {
         }
         return this.basePosterPath + this.sizePosterPath + urlPoster
       },
+}
 
-    listenListData(listaFilm, listaSerieTv){
-      console.log(listaFilm);
-      console.log(listaSerieTv);
-      this.filmList = listaFilm
-      this.tvShowList = listaSerieTv
-    }
-    
-  },
- 
 }
 </script>
 
-<style lang="scss" >
- @import "~bootstrap/scss/bootstrap";
- @import "~font-awesome/css/font-awesome.min.css";
-
- .flags{
+<style lang="scss" scoped>
+.flags{
    width: 20px !important;
  }
- 
- ul{color : white; background-color: black;}
-
 </style>
- 
+
