@@ -1,12 +1,13 @@
 <template>
  
-    <div class="w-auto text-white p-0 me-3 ms-3" @mouseleave="focusingPoster()" @mouseout="notFocusingPoster()">
+    <div class="w-auto text-white p-0 me-3 ms-3" @mouseover="focusedPoster = true" @mouseout="notFocusingPoster()">
         <img class="poster" :src="imgPath(card.poster_path)" alt="" > 
         <div class="containerText d-flex flex-column justify-content-center" v-if="focusedPoster" >
             <p class="fs-3 mb-3"> {{ titleChoose.toUpperCase() }}</p> 
             <p class="my-1" v-if="titleChoose !== originalTitleChoose " >titolo originale: {{ originalTitleChoose }}</p> 
             <p class="my-1"> lingua : <img class="flags mx-1" :src=" !flags[card.original_language] ? urlWorld : flags[card.original_language]" alt=""></p> 
             <p class="my-1">voto : <i v-for="star,i in 5" :key="i" class="fa  text-warning" :class=" i + 1 > Math.round(card.vote_average / 2) ? 'fa-star-o' : 'fa-star'" aria-hidden="true"></i></p>
+            <p>Data di uscita: {{card.release_date}}</p>
         </div> 
     </div>
 
@@ -52,7 +53,7 @@ methods: {
     }
 },
 computed: {
-     titleChoose(){
+    titleChoose(){
        return !this.card.title ? this.card.name : this.card.title
     },
     originalTitleChoose(){
