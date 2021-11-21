@@ -1,17 +1,15 @@
 <template>
  
-    <div>
-        <img :src="imgPath(card.poster_path)" alt=""> <br>
-        titolo: {{ card.title }} <br>
-        titolo originale: {{ card.original_title }} <br>
-        lingua : <img class="flags" :src=" !flags[card.original_language] ? urlWorld : flags[card.original_language]" alt=""> <br>
-        voto : <i v-for="star,i in 5" :key="i" class="fa  text-warning" :class=" i + 1 > Math.round(card.vote_average / 2) ? 'fa-star-o' : 'fa-star'" aria-hidden="true"></i>
+    <div class="w-auto text-white p-0 me-3 ms-3" @mouseleave="focusingPoster()" @mouseout="notFocusingPoster()">
+        <img class="poster" :src="imgPath(card.poster_path)" alt="" > 
+        <div class="containerText d-flex flex-column justify-content-center" v-if="focusedPoster" >
+            <p class="fs-3 mb-3"> {{ titleChoose.toUpperCase() }}</p> 
+            <p class="my-1" v-if="titleChoose !== originalTitleChoose " >titolo originale: {{ originalTitleChoose }}</p> 
+            <p class="my-1"> lingua : <img class="flags mx-1" :src=" !flags[card.original_language] ? urlWorld : flags[card.original_language]" alt=""></p> 
+            <p class="my-1">voto : <i v-for="star,i in 5" :key="i" class="fa  text-warning" :class=" i + 1 > Math.round(card.vote_average / 2) ? 'fa-star-o' : 'fa-star'" aria-hidden="true"></i></p>
+        </div> 
     </div>
 
-   
-
-   
-  
 </template>
 
 <script>
@@ -27,10 +25,8 @@ data(){
             en : "https://images.emojiterra.com/twitter/v12.1.5/512px/1f1ec-1f1e7.png",
             es : "https://images.emojiterra.com/twitter/v12.1.5/512px/1f1ea-1f1f8.png",
             de : "https://images.emojiterra.com/twitter/v13.1/512px/1f1e9-1f1ea.png",
-    
-            //se la lingua non è presente nele mie flags allora inserisci terra se no 
-            // !Flags ? "https://images.emojiterra.com/twitter/v13.1/128px/1f310.png" : "Flags[card.original_language]"
         },
+        focusedPoster: null
 
     }
 },
@@ -47,14 +43,54 @@ methods: {
         }
         return this.basePosterPath + this.sizePosterPath + urlPoster
       },
+    focusingPoster(){
+        console.log("ciao");
+        this.focusedPoster = true  
+    },
+    notFocusingPoster(){
+        this.focusedPoster = false
+    }
+},
+computed: {
+     titleChoose(){
+       return !this.card.title ? this.card.name : this.card.title
+    },
+    originalTitleChoose(){
+       return !this.card.original_title ? this.card.original_name : this.card.original_title
+    },
 }
 
 }
 </script>
 
 <style lang="scss" scoped>
-.flags{
-   width: 20px !important;
- }
+div{
+    position: relative;
+
+    .poster{
+        height: 513px;
+        width: 342px;
+        &:hover{
+        filter: blur(10px);
+        opacity: .5;
+        z-index: 1;  
+    }  
+    }
+    .containerText{
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 513px;
+        width: 342px;
+        background-color: transparent;
+        padding: 20px;
+        p{
+            margin:0;
+            .flags{
+                width: 20px !important;
+            }
+        }
+    }
+}
 </style>
 
